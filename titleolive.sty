@@ -1,0 +1,61 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{titleolive}[2015/10/02 v1.00 titleolive: olive chapter title]
+\RequirePackage{tikz}
+\RequirePackage{fancyhdr}
+\renewcommand{\headrulewidth}{\z@}
+\newlength{\oddrightpage}
+\setlength{\oddrightpage}{\paperwidth}
+\addtolength{\oddrightpage}{-1in}
+\addtolength{\oddrightpage}{-\hoffset}
+\addtolength{\oddrightpage}{-\oddsidemargin}
+\addtolength{\oddrightpage}{-\textwidth}
+\newdimen\evenleftpage
+\setlength{\evenleftpage}{1in}
+\addtolength{\evenleftpage}{\hoffset}
+\addtolength{\evenleftpage}{\evensidemargin}
+\fancyhf{}
+\if@twoside
+\fancyfoot[OR]{\tikz[overlay]\node[right,text=white,fill=olive,rounded corners,inner xsep=1ex]{\parbox{\oddrightpage}{\Large\sffamily\bfseries\thepage}};}
+\fancyfoot[EL]{\tikz[overlay]\node[left,text=white,fill=olive,rounded corners,inner xsep=1ex]{\parbox{\evenleftpage}{\hfill\Large\sffamily\bfseries\thepage}};}
+\else
+\fancyfoot[OR,EL]{\tikz[overlay]\node[right,text=white,fill=olive,rounded corners,inner xsep=1ex]{\parbox{\evenleftpage}{\Large\sffamily\bfseries\thepage}};}
+\fi
+\fancypagestyle{plain}{\pagestyle{fancy}}
+\pagestyle{fancy}
+\newcommand*{\partlabel}{\thepart}
+\renewcommand{\@part}[2][]{\ifnum\c@secnumdepth>-2\relax\refstepcounter{part}\addcontentsline{toc}{part}{\thepart\hspace{1em}#1}\else\addcontentsline{toc}{part}{#1}\fi\markboth{}{}{\parindent\z@
+	\begin{tikzpicture}
+	\node [text=olive] (part) {\scalebox{3}{\parbox{.33\textwidth}{\centering\sffamily\bfseries#2}}};
+	\draw [draw=olive,line width=1ex] ([xshift=-.5\textwidth,yshift=\baselineskip]part.north) -- node [above=\baselineskip,text=olive] {\scalebox{3}{\sffamily\bfseries\partname\space\thepart}} ([xshift=.5\textwidth,yshift=\baselineskip]part.north);
+	\draw [draw=olive,line width=1ex] ([xshift=-.5\textwidth,yshift=-\baselineskip]part.south) -- ([xshift=.5\textwidth,yshift=-\baselineskip]part.south);
+	\end{tikzpicture}
+\par}\@endpart}
+\renewcommand{\@spart}[1]{{\parindent\z@
+	\begin{tikzpicture}
+	\node [text=olive] (part) {\scalebox{3}{\parbox{.33\textwidth}{\centering\sffamily\bfseries#1}}};
+	\draw [draw=olive,line width=1ex] ([xshift=-.5\textwidth,yshift=\baselineskip]part.north) -- ([xshift=.5\textwidth,yshift=\baselineskip]part.north);
+	\draw [draw=olive,line width=1ex] ([xshift=-.5\textwidth,yshift=-\baselineskip]part.south) -- ([xshift=.5\textwidth,yshift=-\baselineskip]part.south);
+	\end{tikzpicture}
+\par}\@endpart}
+\renewcommand{\@makechapterhead}[1]{%
+	{\parindent\z@%
+	\ifnum\c@secnumdepth>\m@ne%
+	\begin{tikzpicture}
+	\node[left](label) at (\textwidth,0) [text=white,fill=olive,rounded corners,inner sep=2ex] {\scalebox{3}{\sffamily\bfseries\thechapter}};
+	\node[left=1em] at (label.west) [text=olive] {\scalebox{2.5}{\sffamily\bfseries\@chapapp}};
+	\draw [draw=olive,line width=1ex] ([xshift=-\textwidth,yshift=-\baselineskip]label.south east)--node[text=olive,below=\baselineskip]{\scalebox{2.5}{\parbox{.4\textwidth}{\centering\sffamily\bfseries#1}}} ([yshift=-\baselineskip]label.south east);
+	\end{tikzpicture}
+	\fi\par\nobreak\vspace*{23\p@}}}
+\renewcommand{\@makeschapterhead}[1]{%
+	{\parindent\z@%
+	\ifnum\c@secnumdepth>\m@ne%
+	\begin{tikzpicture}
+	\draw [draw=olive,line width=1ex] (0,0)--node[above=\baselineskip,text=olive,inner xsep=\z@]{\scalebox{3}{\parbox{.33\textwidth}{\centering\sffamily\bfseries#1}}}(\textwidth,0);
+	\end{tikzpicture}
+	\fi\par\nobreak\vspace*{23\p@}}}
+\renewcommand{\section}{\@startsection{section}{1}{\z@}{2ex\@plus.2ex\@minus.2ex}{1.5ex\@plus.2ex}{\color{olive}\sffamily\Large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}{2ex\@plus.2ex\@minus.2ex}{1.5ex\@plus.2ex}{\color{olive}\sffamily\large\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}{2ex\@plus.2ex\@minus.2ex}{1.5ex\@plus.2ex}{\color{olive}\sffamily\normalsize\bfseries}}
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}{2ex\@plus.2ex\@minus.2ex}{-1em}{\color{olive}\sffamily\normalsize\bfseries}}
+\renewcommand{\subparagraph}{\@startsection{subparagraph}{5}{\z@}{2ex\@plus.2ex\@minus.2ex}{-1em}{\color{olive}\sffamily\normalsize\itshape}}
+\endinput
